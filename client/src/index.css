@@ -293,6 +293,8 @@ button:disabled {
   border-radius: 50%;
   border-top-color: var(--primary-500);
   animation: spinner 0.6s linear infinite;
+  margin-left: 40%;
+  margin-top: 20%;
 }
 
 /* title */
