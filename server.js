@@ -18,6 +18,8 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 import path from "path";
 import cloudinary from "cloudinary";
+import helmet from "helmet";
+import mongoSanitize from "express-mongo-sanitize";
 
 cloudinary.config({ 
   cloud_name: process.env.CLOUD_NAME, 
@@ -41,19 +43,8 @@ if (process.env.NODE_ENV === "development") {
 
 app.use(cookieParser());
 app.use(express.json());
-
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
-
-app.post("/", (req, res) => {
-  console.log(req);
-  res.json({ message: "Data Accessed", data: req.body });
-});
-
-app.get("/api/v1/test", (req, res) => {
-  res.json({ message: "TEST route"});
-})
+app.use(helmet());
+app.use(mongoSanitize());
 
 app.use("/api/v1/jobs",authenticateUser, jobRouter);
 app.use("/api/v1/users", authenticateUser,userRouter);
