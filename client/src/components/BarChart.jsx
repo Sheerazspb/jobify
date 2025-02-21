@@ -19,8 +19,8 @@ const BarChartComponent = ({data}) => {
 BarChartComponent.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      value: PropTypes.number.isRequired,
+      name: PropTypes.string,
+      value: PropTypes.number,
     })
   ).isRequired,
 };

@@ -29,7 +29,7 @@ FormRowSelect.propTypes = {
   labelText: PropTypes.string,
   list: PropTypes.arrayOf(PropTypes.string).isRequired,
   defaultValue: PropTypes.string,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func
 };
 
 export default FormRowSelect
