@@ -2,8 +2,9 @@ import { Outlet, redirect,useNavigate,useNavigation } from "react-router-dom"
 import PropTypes from 'prop-types';
 import Wrapper from "../assets/wrappers/Dashboard"
 import { BigSidebar, Navbar, SmallSidebar,Loading } from "../components"
-import { createContext, useState, useContext } from "react"
-import { checkDefaultTheme } from "../App"
+import { useState, useCallback } from "react"
+import { DashboardContext } from "../hooks/dashboardHook"
+import { checkDefaultTheme } from "../utils/defaultTheme"
 import customFetch from "../utils/customFetch"
 import { toast } from "react-toastify"
 import { useQuery } from "@tanstack/react-query"
@@ -27,7 +28,7 @@ export const loader = (queryClient) => async () => {
   }
 }
 
-const DashboardContext =  createContext()
+// const DashboardContext =  createContext()
 
 const DashboardLayout = ({queryClient}) => {
   const {user} = useQuery(userQuery).data;
@@ -49,12 +50,12 @@ const DashboardLayout = ({queryClient}) => {
     setShowSidebar(!showSidebar)
   }
 
-  const logoutUser = async () => {
+  const logoutUser = useCallback(async () => {
     navigate("/")
     await customFetch.get("/auth/logout")
     queryClient.invalidateQueries()
     toast.success("Logged out")
-  }
+  }, [navigate, queryClient]);
 
     customFetch.interceptors.response.use(
       (response) => {
@@ -70,7 +71,7 @@ const DashboardLayout = ({queryClient}) => {
     useEffect(() => {
       if (!isAuthError) return;
       logoutUser();
-    }, [isAuthError]);
+    }, [isAuthError,logoutUser]);
 
   return (
     <DashboardContext.Provider
@@ -100,8 +101,8 @@ const DashboardLayout = ({queryClient}) => {
   );
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
-export const useDashboardContext = () => useContext(DashboardContext)
+
+// export const useDashboardContext = () => useContext(DashboardContext)
 DashboardLayout.propTypes = {
   queryClient: PropTypes.object.isRequired,
 };
